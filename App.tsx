@@ -22,6 +22,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {RootNavigation} from './src/navigations';
 import {AppColors} from './src/assets';
+import {Provider} from 'react-redux';
+import {store} from './src/states';
 
 function HomeScreen() {
   return (
@@ -47,7 +49,9 @@ function App(): React.JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <SafeAreaProvider>
-        <RootNavigation />
+        <Provider store={store}>
+          <RootNavigation />
+        </Provider>
       </SafeAreaProvider>
     </NavigationContainer>
   );
