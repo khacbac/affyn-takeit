@@ -1,9 +1,10 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 import React from 'react';
 import {CameraScreen, GalleryScreen, LoginScreen} from '../features';
+import {RootStackParamList} from './NavigationTypes';
 
 type IProps = {};
 export const RootNavigation: React.FC<IProps> = ({}) => {
