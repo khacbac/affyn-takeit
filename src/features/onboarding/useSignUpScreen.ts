@@ -5,6 +5,7 @@ import {useMemo, useState} from 'react';
 import {validateEmail} from '../../utils';
 import {modalManager} from '../../components';
 import {Keyboard} from 'react-native';
+import {firebaseManager} from '../../firebase';
 
 export const useSignUpScreen = () => {
   const navigation = useNavigation<RootStackProps<'Login'>>();
@@ -26,32 +27,31 @@ export const useSignUpScreen = () => {
     navigation.goBack();
   };
 
-  const onCreateAccount = () => {
+  const onCreateAccount = async () => {
     if (isInValid) {
       return;
     }
     Keyboard.dismiss();
-    modalManager.showLoading();
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('User account created & signed in!');
-        navigation.goBack();
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-
-        console.error(error);
-      })
-      .finally(() => {
-        modalManager.hideLoading();
-      });
+    try {
+      modalManager.showLoading();
+      const response = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      const uid = response.user.uid;
+      const data = {id: uid, email};
+      await firebaseManager.getFirestore('users').doc(uid).set(data);
+      navigation.goBack();
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+    } finally {
+      modalManager.hideLoading();
+    }
   };
 
   return {

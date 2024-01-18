@@ -4,8 +4,7 @@ import {Camera} from 'react-native-vision-camera';
 import {modalManager} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackProps} from '../../navigations';
-import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
+import {firebaseManager} from '../../firebase';
 
 export const useCameraScreen = () => {
   const navigation = useNavigation<RootStackProps<'Camera'>>();
@@ -23,17 +22,15 @@ export const useCameraScreen = () => {
       if (!photo) {
         return;
       }
-      console.log('BACHK_____ photo : ', photo);
       const photoTitle = `${Date.now()}`;
       const photoName = `${photoTitle}.png`;
-      const storageRef = storage().ref(photoName);
+      const storageRef = firebaseManager.getStorage(photoName);
       // uploads file
       await storageRef.putFile(photo.path);
-      const firestoreRef = firestore().collection('gallery');
+      const firestoreRef = firebaseManager.getFirestore('gallery');
       firestoreRef.add({title: photoTitle, photoName});
       navigation.goBack();
     } catch (error) {
-      console.log('BACHK_____ error : ', error);
     } finally {
       modalManager.hideLoading();
     }

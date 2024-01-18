@@ -13,20 +13,33 @@ import {AppImages} from '../../assets';
 
 type IProps = {};
 export const LoginScreen: React.FC<IProps> = ({}) => {
-  const {funcs} = useLoginScreen();
+  const {funcs, isInValid, states} = useLoginScreen();
   return (
     <Container safeArea="all" contentStyle={styles.contentStyle}>
       <AppSpacing spacing={24}>
         <Image source={AppImages.logo} style={styles.logo} />
         <View>
           <AppSpacing spacing={12}>
-            <AppTextInput placeholder="Email" />
-            <AppTextInput placeholder="Password" />
+            <AppTextInput
+              placeholder="Email"
+              value={states.email}
+              onChangeText={states.setEmail}
+            />
+            <AppTextInput
+              placeholder="Password"
+              value={states.password}
+              onChangeText={states.setPassWord}
+              secureTextEntry
+            />
           </AppSpacing>
         </View>
         <View>
           <AppSpacing spacing={6}>
-            <AppButton text="Login" onPress={funcs.onLogin} />
+            <AppButton
+              text="Login"
+              onPress={funcs.onLogin}
+              disabled={isInValid}
+            />
             <Pressable
               style={styles.createAccount}
               onPress={funcs.onCreateAccount}>

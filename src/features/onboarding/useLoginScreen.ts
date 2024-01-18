@@ -1,30 +1,58 @@
 import {useNavigation} from '@react-navigation/native';
 import {RootStackProps} from '../../navigations';
 import auth from '@react-native-firebase/auth';
+import {useMemo, useState} from 'react';
+import {validateEmail} from '../../utils';
+import {modalManager} from '../../components';
+import {Keyboard} from 'react-native';
+import {firebaseManager} from '../../firebase';
+import {setIsLoggedIn, setUser, useAppDispatch} from '../../states';
 
 export const useLoginScreen = () => {
   const navigation = useNavigation<RootStackProps<'Login'>>();
+  const dispatch = useAppDispatch();
+  const [email, setEmail] = useState('');
+  const [password, setPassWord] = useState('');
 
-  const onLogin = () => {
-    // navigation.navigate('Gallery');
-    auth()
-      .signInAnonymously()
-      .then(() => {
-        console.log('User signed in anonymously');
-        navigation.navigate('Gallery');
-      })
-      .catch(error => {
-        if (error.code === 'auth/operation-not-allowed') {
-          console.log('Enable anonymous in your firebase console.');
-        }
+  const isInValid = useMemo(() => {
+    return !email || !validateEmail(email) || !password;
+  }, [email, password]);
 
-        console.error(error);
-      });
+  const onLogin = async () => {
+    if (isInValid) {
+      return;
+    }
+    try {
+      Keyboard.dismiss();
+      modalManager.showLoading();
+      const response = await auth().signInWithEmailAndPassword(email, password);
+      const uid = response.user.uid;
+      const usersRef = firebaseManager.getFirestore('users');
+      const userDoc = await usersRef.doc(uid).get();
+      if (!userDoc.exists) {
+        return;
+      }
+      const user: any = userDoc.data();
+      dispatch(setUser(user));
+      dispatch(setIsLoggedIn(true));
+    } catch (error) {
+    } finally {
+      modalManager.hideLoading();
+    }
   };
 
   const onCreateAccount = () => {
     navigation.navigate('SignUp');
   };
 
-  return {funcs: {onLogin, onCreateAccount}};
+  return {
+    isInValid,
+    states: {
+      email,
+      setEmail,
+      password,
+      setPassWord,
+    },
+    funcs: {onLogin, onCreateAccount},
+  };
 };

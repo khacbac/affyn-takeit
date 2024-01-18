@@ -8,24 +8,34 @@ import {
   SignUpScreen,
 } from '../features';
 import {RootStackParamList} from './NavigationTypes';
+import {selectIsLoggedIn, useAppSelector} from '../states';
 
 type IProps = {};
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export const RootNavigation: React.FC<IProps> = ({}) => {
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="SignUp"
-        component={SignUpScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen name="Camera" component={CameraScreen} />
-      <Stack.Screen name="Gallery" component={GalleryScreen} />
+      {!isLoggedIn && (
+        <Stack.Group navigationKey="Guest">
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{headerShown: false}}
+          />
+        </Stack.Group>
+      )}
+      {isLoggedIn && (
+        <Stack.Group navigationKey="User">
+          <Stack.Screen name="Gallery" component={GalleryScreen} />
+          <Stack.Screen name="Camera" component={CameraScreen} />
+        </Stack.Group>
+      )}
     </Stack.Navigator>
   );
 };
