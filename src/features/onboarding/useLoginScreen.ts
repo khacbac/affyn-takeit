@@ -4,14 +4,16 @@ import auth from '@react-native-firebase/auth';
 import {useMemo, useState} from 'react';
 import {validateEmail} from '../../utils';
 import {modalManager} from '../../components';
-import {Alert, Keyboard} from 'react-native';
+import {Alert, Keyboard, Platform} from 'react-native';
 import {firebaseManager} from '../../firebase';
 import {setIsLoggedIn, setUser, useAppDispatch} from '../../states';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
   webClientId:
-    '452543649123-e2uv5pgh2aruqo47ksti1pgpdfl2cl72.apps.googleusercontent.com',
+    Platform.OS === 'android'
+      ? '452543649123-e2uv5pgh2aruqo47ksti1pgpdfl2cl72.apps.googleusercontent.com'
+      : '452543649123-nhncsjhmg5dubukhsam42hkgjvkvr42m.apps.googleusercontent.com',
 });
 
 export const useLoginScreen = () => {
