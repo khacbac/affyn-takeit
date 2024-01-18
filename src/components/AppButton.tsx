@@ -17,12 +17,14 @@ export const AppButton: React.FC<IProps> = ({
   text,
   textStyle,
   style,
+  disabled,
   ...props
 }) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       activeOpacity={0.7}
-      style={[styles.container, style]}
+      style={[styles.container, disabled && styles.disabledContainer, style]}
       {...props}>
       <Text style={[styles.text, textStyle]}>{text}</Text>
     </TouchableOpacity>
@@ -36,6 +38,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 16,
+  },
+  disabledContainer: {
+    backgroundColor: AppColors.disabled,
   },
   text: {
     color: AppColors.white,

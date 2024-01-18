@@ -9,4 +9,5 @@ export const AppColors = {
   primary: '#000000',
   transparent: '#00000000',
   background: '#f2f2f2',
+  disabled: '#999999',
 };

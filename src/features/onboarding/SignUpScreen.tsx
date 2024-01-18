@@ -1,33 +1,44 @@
 import React from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {AppButton, AppSpacing, AppTextInput, Container} from '../../components';
 import {AppImages} from '../../assets';
 import {useSignUpScreen} from './useSignUpScreen';
 
 type IProps = {};
 export const SignUpScreen: React.FC<IProps> = ({}) => {
-  const {funcs} = useSignUpScreen();
+  const {funcs, states, isInValid} = useSignUpScreen();
   return (
     <Container safeArea="all" contentStyle={styles.contentStyle}>
       <AppSpacing spacing={24}>
         <Image source={AppImages.logo} style={styles.logo} />
         <View>
           <AppSpacing spacing={12}>
-            <AppTextInput placeholder="Email" />
-            <AppTextInput placeholder="Password" />
-            <AppTextInput placeholder="Confirm Password" />
+            <AppTextInput
+              placeholder="Email"
+              value={states.email}
+              onChangeText={states.setEmail}
+            />
+            <AppTextInput
+              placeholder="Password"
+              value={states.password}
+              onChangeText={states.setPassWord}
+              secureTextEntry
+            />
+            <AppTextInput
+              placeholder="Confirm Password"
+              value={states.confirmPassWord}
+              onChangeText={states.setConfirmPassWord}
+              secureTextEntry
+            />
           </AppSpacing>
         </View>
         <View>
           <AppSpacing spacing={6}>
-            <AppButton text="Create account" onPress={funcs.onCreateAccount} />
+            <AppButton
+              text="Create account"
+              onPress={funcs.onCreateAccount}
+              disabled={isInValid}
+            />
             <Pressable style={styles.createAccount} onPress={funcs.onLogin}>
               <Text>
                 Already got an account?
