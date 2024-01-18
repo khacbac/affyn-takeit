@@ -1,5 +1,5 @@
 import React, {useLayoutEffect} from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Image, Pressable, Text, View} from 'react-native';
 import {AppButton, Container} from '../../components';
 import {useGalleryScreen} from './useGalleryScreen';
 import {
