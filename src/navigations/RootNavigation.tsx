@@ -18,15 +18,17 @@ import {
 } from '../states';
 import {firebaseManager} from '../firebase';
 import {Container} from '../components';
-import {Image} from 'react-native';
+import {Alert, Image} from 'react-native';
 import {AppImages} from '../assets';
 import Geolocation from '@react-native-community/geolocation';
+import {useAppPermission} from '../hooks';
 
 type IProps = {};
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export const RootNavigation: React.FC<IProps> = ({}) => {
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
+  const {checkIfLocationPermissionEnable} = useAppPermission();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   useEffect(() => {
@@ -38,8 +40,8 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
           .get()
           .then(document => {
             const userData: any = document.data();
-            dispatch(setUser(userData));
-            dispatch(setIsLoggedIn(true));
+            // dispatch(setUser(userData));
+            // dispatch(setIsLoggedIn(true));
           })
           .catch(error => {})
           .finally(() => {
@@ -52,18 +54,22 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
   }, []);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      pos => {
-        dispatch(
-          setUserLocation({
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-          }),
+    checkIfLocationPermissionEnable().then(isEnabled => {
+      if (isEnabled) {
+        Geolocation.getCurrentPosition(
+          pos => {
+            dispatch(
+              setUserLocation({
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+              }),
+            );
+          },
+          err => {},
+          {timeout: 5000, enableHighAccuracy: false},
         );
-      },
-      err => {},
-      {timeout: 5000, enableHighAccuracy: false},
-    );
+      }
+    });
   }, []);
 
   if (loading) {

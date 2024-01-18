@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 import {useMemo, useState} from 'react';
 import {validateEmail} from '../../utils';
 import {modalManager} from '../../components';
-import {Keyboard} from 'react-native';
+import {Alert, Keyboard} from 'react-native';
 import {firebaseManager} from '../../firebase';
 import {setIsLoggedIn, setUser, useAppDispatch} from '../../states';
 
@@ -36,6 +36,7 @@ export const useLoginScreen = () => {
       dispatch(setUser(user));
       dispatch(setIsLoggedIn(true));
     } catch (error) {
+      Alert.alert('Something went wrong.\nPlease try again');
     } finally {
       modalManager.hideLoading();
     }

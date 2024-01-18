@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 import {useMemo, useState} from 'react';
 import {validateEmail} from '../../utils';
 import {modalManager} from '../../components';
-import {Keyboard} from 'react-native';
+import {Alert, Keyboard} from 'react-native';
 import {firebaseManager} from '../../firebase';
 
 export const useSignUpScreen = () => {
@@ -44,11 +44,14 @@ export const useSignUpScreen = () => {
       navigation.goBack();
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
+        Alert.alert('That email address is already in use!');
+        return;
       }
       if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
+        Alert.alert('That email address is invalid!');
+        return;
       }
+      Alert.alert('Something went wrong.\nPlease try again');
     } finally {
       modalManager.hideLoading();
     }

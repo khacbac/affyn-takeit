@@ -2,6 +2,19 @@ import {Platform} from 'react-native';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 
 export const useAppPermission = () => {
+  const checkIfLocationPermissionEnable = async () => {
+    try {
+      const permission =
+        Platform.OS === 'android'
+          ? PERMISSIONS.ANDROID.CAMERA
+          : PERMISSIONS.IOS.LOCATION_ALWAYS;
+      const res = await check(permission);
+      return Promise.resolve(res === 'granted');
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   const requestCameraPermission = () => {
     const permission =
       Platform.OS === 'android'
@@ -34,5 +47,9 @@ export const useAppPermission = () => {
     }
   };
 
-  return {requestCameraPermission, requestLocationPermission};
+  return {
+    requestCameraPermission,
+    requestLocationPermission,
+    checkIfLocationPermissionEnable,
+  };
 };

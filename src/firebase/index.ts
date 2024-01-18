@@ -1,1 +1,1 @@
-export * from './FireBaseManager';
+export * from './FirebaseManager';
