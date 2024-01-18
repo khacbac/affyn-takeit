@@ -70,7 +70,7 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
             </Text>
           )}
           <Text style={styles.itemCreatedAt}>
-            {moment(item.createdAt).format('DD MMM YYYY -  HH:mm')}
+            {moment(item.createdAt).format('DD/MM/YYYY HH:mm')}
           </Text>
         </View>
       </Pressable>
