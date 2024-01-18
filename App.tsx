@@ -24,6 +24,7 @@ import {RootNavigation} from './src/navigations';
 import {AppColors} from './src/assets';
 import {Provider} from 'react-redux';
 import {store} from './src/states';
+import {ModalProvider} from './src/components';
 
 function HomeScreen() {
   return (
@@ -51,6 +52,7 @@ function App(): React.JSX.Element {
       <SafeAreaProvider>
         <Provider store={store}>
           <RootNavigation />
+          <ModalProvider />
         </Provider>
       </SafeAreaProvider>
     </NavigationContainer>
