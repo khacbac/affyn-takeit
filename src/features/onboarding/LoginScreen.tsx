@@ -10,46 +10,50 @@ import {
 import {AppButton, AppSpacing, AppTextInput, Container} from '../../components';
 import {useLoginScreen} from './useLoginScreen';
 import {AppImages} from '../../assets';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 type IProps = {};
 export const LoginScreen: React.FC<IProps> = ({}) => {
   const {funcs, isInValid, states} = useLoginScreen();
   return (
     <Container safeArea="all" contentStyle={styles.contentStyle}>
-      <AppSpacing spacing={24}>
-        <Image source={AppImages.logo} style={styles.logo} />
-        <View>
-          <AppSpacing spacing={12}>
-            <AppTextInput
-              placeholder="Email"
-              value={states.email}
-              onChangeText={states.setEmail}
-            />
-            <AppTextInput
-              placeholder="Password"
-              value={states.password}
-              onChangeText={states.setPassWord}
-              secureTextEntry
-            />
-          </AppSpacing>
-        </View>
-        <View>
-          <AppSpacing spacing={6}>
-            <AppButton
-              text="Login"
-              onPress={funcs.onLogin}
-              disabled={isInValid}
-            />
-            <Pressable
-              style={styles.createAccount}
-              onPress={funcs.onCreateAccount}>
-              <Text style={{color: '#66b3ff', fontWeight: '500'}}>
-                Create account
-              </Text>
-            </Pressable>
-          </AppSpacing>
-        </View>
-      </AppSpacing>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{justifyContent: 'center', flex: 1}}>
+        <AppSpacing spacing={24}>
+          <Image source={AppImages.logo} style={styles.logo} />
+          <View>
+            <AppSpacing spacing={12}>
+              <AppTextInput
+                placeholder="Email"
+                value={states.email}
+                onChangeText={states.setEmail}
+              />
+              <AppTextInput
+                placeholder="Password"
+                value={states.password}
+                onChangeText={states.setPassWord}
+                secureTextEntry
+              />
+            </AppSpacing>
+          </View>
+          <View>
+            <AppSpacing spacing={6}>
+              <AppButton
+                text="Login"
+                onPress={funcs.onLogin}
+                disabled={isInValid}
+              />
+              <Pressable
+                style={styles.createAccount}
+                onPress={funcs.onCreateAccount}>
+                <Text style={{color: '#66b3ff', fontWeight: '500'}}>
+                  Create account
+                </Text>
+              </Pressable>
+            </AppSpacing>
+          </View>
+        </AppSpacing>
+      </KeyboardAwareScrollView>
     </Container>
   );
 };

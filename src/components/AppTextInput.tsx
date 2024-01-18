@@ -1,9 +1,16 @@
 import React from 'react';
 import {StyleSheet, TextInput, TextInputProps} from 'react-native';
+import {AppColors} from '../assets';
 
 type IProps = TextInputProps & {};
 export const AppTextInput: React.FC<IProps> = ({style, ...props}) => {
-  return <TextInput style={[styles.container, style]} {...props} />;
+  return (
+    <TextInput
+      style={[styles.container, style]}
+      placeholderTextColor={AppColors.black50}
+      {...props}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
