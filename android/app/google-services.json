@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "452543649123",
+    "project_id": "affyn-a4215",
+    "storage_bucket": "affyn-a4215.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452543649123:android:298451df7063a5b0a92f56",
+        "android_client_info": {
+          "package_name": "com.affyntakeit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh6yS8fMVSVnW87pMJ5BpfoWC-Et9I01E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
