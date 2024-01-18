@@ -41,8 +41,8 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
           .then(document => {
             const userData: any = document.data();
             if (userData) {
-              // dispatch(setUser(userData));
-              // dispatch(setIsLoggedIn(true));
+              dispatch(setUser(userData));
+              dispatch(setIsLoggedIn(true));
             }
           })
           .catch(error => {})
