@@ -1,7 +1,10 @@
 import {useEffect} from 'react';
 import {
+  removeUser,
   selectUser,
+  setIsLoggedIn,
   setPhotos,
+  setUser,
   setUserLocation,
   useAppSelector,
 } from '../../states';
@@ -11,6 +14,8 @@ import {Alert} from 'react-native';
 import {useAppPermission} from '../../hooks';
 import Geolocation from '@react-native-community/geolocation';
 import {firebaseManager} from '../../firebase';
+import auth from '@react-native-firebase/auth';
+import {modalManager} from '../../components';
 
 export const useGalleryScreen = () => {
   const user = useAppSelector(selectUser);
@@ -71,5 +76,19 @@ export const useGalleryScreen = () => {
     Alert.alert('', 'Coming soon');
   };
 
-  return {funcs: {openPhoto}};
+  const onLogOut = () => {
+    modalManager.showLoading();
+    auth()
+      .signOut()
+      .then(() => {
+        dispatch(removeUser());
+        dispatch(setIsLoggedIn(false));
+      })
+      .catch(() => {})
+      .finally(() => {
+        modalManager.hideLoading();
+      });
+  };
+
+  return {funcs: {openPhoto, onLogOut}};
 };

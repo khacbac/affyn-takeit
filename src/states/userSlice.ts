@@ -25,10 +25,13 @@ export const userSlice = createSlice({
     setUserLocation: (state, action: PayloadAction<LatLng>) => {
       state.location = action.payload;
     },
+    removeUser: state => {
+      state.user = {email: '', id: ''};
+    },
   },
 });
 
-export const {setUser, setUserLocation} = userSlice.actions;
+export const {setUser, setUserLocation, removeUser} = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user;

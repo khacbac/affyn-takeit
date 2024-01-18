@@ -20,6 +20,7 @@ import {PHOTO_RATIO} from '../../constants';
 import {AppColors} from '../../assets';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type IProps = {};
 const {width} = Dimensions.get('window');
@@ -31,6 +32,7 @@ const PHOTO_WIDTH =
 const PHOTO_HEIGHT = PHOTO_WIDTH / PHOTO_RATIO;
 export const GalleryScreen: React.FC<IProps> = ({}) => {
   const {funcs} = useGalleryScreen();
+  const {bottom} = useSafeAreaInsets();
   const navigation = useNavigation<RootStackProps<'Gallery'>>();
   const photos = useAppSelector(selectPhotos);
 
@@ -87,6 +89,11 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
         )}
         contentContainerStyle={styles.list}
       />
+      <AppButton
+        text="Logout"
+        style={[styles.logoutBtn, {bottom: bottom + 16, right: 16}]}
+        onPress={funcs.onLogOut}
+      />
     </Container>
   );
 };
@@ -111,4 +118,8 @@ const styles = StyleSheet.create({
   },
   location: {color: AppColors.white, fontSize: 8},
   itemCreatedAt: {color: AppColors.white, fontSize: 8},
+  logoutBtn: {
+    position: 'absolute',
+    paddingHorizontal: 16,
+  },
 });
