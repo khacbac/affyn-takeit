@@ -1,6 +1,8 @@
 export const AppColors = {
   white: '#ffffff',
   black: '#000000',
+  black80: 'rgba(0,0,0,0.8)',
+  black70: 'rgba(0,0,0,0.7)',
   black50: 'rgba(0,0,0,0.5)',
   black10: 'rgba(0,0,0,0.1)',
   black20: 'rgba(0,0,0,0.2)',

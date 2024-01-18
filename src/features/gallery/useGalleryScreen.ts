@@ -1,33 +1,71 @@
 import {useEffect} from 'react';
-import firestore from '@react-native-firebase/firestore';
-import {selectUser, setPhotos, useAppSelector} from '../../states';
+import {
+  selectUser,
+  setPhotos,
+  setUserLocation,
+  useAppSelector,
+} from '../../states';
 import {FBPhoto} from '../../types';
 import {useDispatch} from 'react-redux';
 import {Alert} from 'react-native';
+import {useAppPermission} from '../../hooks';
+import Geolocation from '@react-native-community/geolocation';
+import {firebaseManager} from '../../firebase';
 
 export const useGalleryScreen = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useDispatch();
+  const {requestLocationPermission} = useAppPermission();
 
   useEffect(() => {
-    const firestoreRef = firestore().collection('gallery');
-    return firestoreRef
+    if (!user) {
+      return;
+    }
+    const subscriber = firebaseManager
+      .getFirestore('gallery')
       .where('authorID', '==', user.id)
+      .orderBy('createdAt', 'desc')
       .onSnapshot(querySnapshot => {
         const list: FBPhoto[] = [];
-        querySnapshot.forEach(doc => {
+        querySnapshot?.forEach(doc => {
           const data = doc.data();
           list.push({
             authorID: data.authorID,
-            createdAt: data.createdAt,
             photoPath: data.photoPath,
             photoUrl: data.photoUrl,
             title: data.title,
+            location: data.location,
+            ...(data.createdAt && {
+              createdAt: new Date(data.createdAt?.toDate()).toISOString(),
+            }),
           });
         });
-        dispatch(setPhotos(list));
+        if (list.length > 0) {
+          dispatch(setPhotos(list));
+        }
       });
+
+    return () => subscriber();
   }, [user]);
+
+  useEffect(() => {
+    requestLocationPermission()
+      .then(() => {
+        Geolocation.getCurrentPosition(
+          pos => {
+            dispatch(
+              setUserLocation({
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+              }),
+            );
+          },
+          err => {},
+          {timeout: 5000, enableHighAccuracy: false},
+        );
+      })
+      .catch(() => {});
+  }, []);
 
   const openPhoto = () => {
     Alert.alert('', 'Coming soon');
