@@ -52,6 +52,7 @@ export const LoginScreen: React.FC<IProps> = ({}) => {
               </Pressable>
             </AppSpacing>
           </View>
+          <AppButton text="Google" onPress={funcs.onGoolgeLogin} />
         </AppSpacing>
       </KeyboardAwareScrollView>
     </Container>

@@ -7,6 +7,12 @@ import {modalManager} from '../../components';
 import {Alert, Keyboard} from 'react-native';
 import {firebaseManager} from '../../firebase';
 import {setIsLoggedIn, setUser, useAppDispatch} from '../../states';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId:
+    '452543649123-e2uv5pgh2aruqo47ksti1pgpdfl2cl72.apps.googleusercontent.com',
+});
 
 export const useLoginScreen = () => {
   const navigation = useNavigation<RootStackProps<'Login'>>();
@@ -46,6 +52,30 @@ export const useLoginScreen = () => {
     navigation.navigate('SignUp');
   };
 
+  const onGoolgeLogin = async () => {
+    try {
+      modalManager.showLoading();
+      // Check if your device supports Google Play
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      // Get the users ID token
+      const {idToken} = await GoogleSignin.signIn();
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      // Sign-in the user with the credential
+      const response = await auth().signInWithCredential(googleCredential);
+      if (response.user.email) {
+        dispatch(setUser({email: response.user.email, id: response.user.uid}));
+        dispatch(setIsLoggedIn(true));
+      } else {
+        Alert.alert('Something went wrong.\nPlease try again');
+      }
+    } catch (error) {
+      Alert.alert('Something went wrong.\nPlease try again');
+    } finally {
+      modalManager.hideLoading();
+    }
+  };
+
   return {
     isInValid,
     states: {
@@ -54,6 +84,6 @@ export const useLoginScreen = () => {
       password,
       setPassWord,
     },
-    funcs: {onLogin, onCreateAccount},
+    funcs: {onLogin, onCreateAccount, onGoolgeLogin},
   };
 };

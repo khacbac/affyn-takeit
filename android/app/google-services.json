@@ -12,7 +12,20 @@
           "package_name": "com.affyntakeit"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "452543649123-8hsk1e72qvcsippvg86rc4vc8eaaof6u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.affyntakeit",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "452543649123-e2uv5pgh2aruqo47ksti1pgpdfl2cl72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCh6yS8fMVSVnW87pMJ5BpfoWC-Et9I01E"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452543649123-e2uv5pgh2aruqo47ksti1pgpdfl2cl72.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "452543649123-nhncsjhmg5dubukhsam42hkgjvkvr42m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.AffynTakelt"
+              }
+            }
+          ]
         }
       }
     }

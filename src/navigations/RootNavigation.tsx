@@ -18,7 +18,7 @@ import {
 } from '../states';
 import {firebaseManager} from '../firebase';
 import {Container} from '../components';
-import {Alert, Image} from 'react-native';
+import {Image} from 'react-native';
 import {AppImages} from '../assets';
 import Geolocation from '@react-native-community/geolocation';
 import {useAppPermission} from '../hooks';
@@ -40,8 +40,10 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
           .get()
           .then(document => {
             const userData: any = document.data();
-            dispatch(setUser(userData));
-            dispatch(setIsLoggedIn(true));
+            if (userData && __DEV__) {
+              dispatch(setUser(userData));
+              dispatch(setIsLoggedIn(true));
+            }
           })
           .catch(error => {})
           .finally(() => {
