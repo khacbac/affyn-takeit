@@ -6,9 +6,12 @@ import {useNavigation} from '@react-navigation/native';
 import {RootStackProps} from '../../navigations';
 import {firebaseManager} from '../../firebase';
 import firestore from '@react-native-firebase/firestore';
+import {selectUser, useAppSelector} from '../../states';
+import {FBPhoto} from '../../types';
 
 export const useCameraScreen = () => {
   const navigation = useNavigation<RootStackProps<'Camera'>>();
+  const user = useAppSelector(selectUser);
   const {requestCameraPermission} = useAppPermission();
   const camera = useRef<Camera>(null);
 
@@ -28,12 +31,14 @@ export const useCameraScreen = () => {
       const storageRef = firebaseManager.getStorage(photoName);
       // uploads file
       await storageRef.putFile(photo.path);
+      const photoUrl = await storageRef.getDownloadURL();
       const firestoreRef = firebaseManager.getFirestore('gallery');
-      const timestamp = firestore.FieldValue.serverTimestamp();
-      const data = {
+      const data: FBPhoto = {
         title: photoTitle,
-        photo: photoName,
-        createdAt: timestamp,
+        photoPath: photoName,
+        photoUrl,
+        createdAt: new Date().toISOString(),
+        authorID: user.id,
       };
       await firestoreRef.add(data);
       navigation.goBack();

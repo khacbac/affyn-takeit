@@ -16,7 +16,7 @@ import {
   useAppSelector,
 } from '../states';
 import {firebaseManager} from '../firebase';
-import {Container, modalManager} from '../components';
+import {Container} from '../components';
 import {Image} from 'react-native';
 import {AppImages} from '../assets';
 
@@ -77,7 +77,11 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
       {isLoggedIn && (
         <Stack.Group navigationKey="User">
           <Stack.Screen name="Gallery" component={GalleryScreen} />
-          <Stack.Screen name="Camera" component={CameraScreen} />
+          <Stack.Screen
+            name="Camera"
+            component={CameraScreen}
+            options={{headerShown: false}}
+          />
         </Stack.Group>
       )}
     </Stack.Navigator>
