@@ -8,12 +8,12 @@ import {
   View,
 } from 'react-native';
 import {AppButton, AppSpacing, AppTextInput, Container} from '../../components';
-import {useLoginScreen} from './useLoginScreen';
 import {AppImages} from '../../assets';
+import {useSignUpScreen} from './useSignUpScreen';
 
 type IProps = {};
-export const LoginScreen: React.FC<IProps> = ({}) => {
-  const {funcs} = useLoginScreen();
+export const SignUpScreen: React.FC<IProps> = ({}) => {
+  const {funcs} = useSignUpScreen();
   return (
     <Container safeArea="all" contentStyle={styles.contentStyle}>
       <AppSpacing spacing={24}>
@@ -22,16 +22,18 @@ export const LoginScreen: React.FC<IProps> = ({}) => {
           <AppSpacing spacing={12}>
             <AppTextInput placeholder="Email" />
             <AppTextInput placeholder="Password" />
+            <AppTextInput placeholder="Confirm Password" />
           </AppSpacing>
         </View>
         <View>
           <AppSpacing spacing={6}>
-            <AppButton text="Login" onPress={funcs.onLogin} />
-            <Pressable
-              style={styles.createAccount}
-              onPress={funcs.onCreateAccount}>
-              <Text style={{color: '#66b3ff', fontWeight: '500'}}>
-                Create account
+            <AppButton text="Create account" onPress={funcs.onCreateAccount} />
+            <Pressable style={styles.createAccount} onPress={funcs.onLogin}>
+              <Text>
+                Already got an account?
+                <Text style={{color: '#66b3ff', fontWeight: '500'}}>
+                  {' Login'}
+                </Text>
               </Text>
             </Pressable>
           </AppSpacing>

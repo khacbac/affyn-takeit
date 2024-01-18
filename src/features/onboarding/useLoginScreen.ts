@@ -22,5 +22,9 @@ export const useLoginScreen = () => {
       });
   };
 
-  return {funcs: {onLogin}};
+  const onCreateAccount = () => {
+    navigation.navigate('SignUp');
+  };
+
+  return {funcs: {onLogin, onCreateAccount}};
 };
