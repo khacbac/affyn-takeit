@@ -30,7 +30,7 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <SafeAreaProvider>

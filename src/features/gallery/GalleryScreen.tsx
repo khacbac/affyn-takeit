@@ -21,6 +21,7 @@ import {AppColors} from '../../assets';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {HomeHeader} from './components';
 
 type IProps = {};
 const {width} = Dimensions.get('window');
@@ -32,24 +33,24 @@ const PHOTO_WIDTH =
 const PHOTO_HEIGHT = PHOTO_WIDTH / PHOTO_RATIO;
 export const GalleryScreen: React.FC<IProps> = ({}) => {
   const {funcs} = useGalleryScreen();
-  const {bottom} = useSafeAreaInsets();
+  const {bottom, top} = useSafeAreaInsets();
   const navigation = useNavigation<RootStackProps<'Gallery'>>();
   const photos = useAppSelector(selectPhotos);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Pressable
-            onPress={() => {
-              navigation.navigate('Camera');
-            }}>
-            <Text>Open Camera</Text>
-          </Pressable>
-        );
-      },
-    });
-  }, []);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => {
+  //       return (
+  //         <Pressable
+  //           onPress={() => {
+  //             navigation.navigate('Camera');
+  //           }}>
+  //           <Text>Open Camera</Text>
+  //         </Pressable>
+  //       );
+  //     },
+  //   });
+  // }, []);
 
   const renderItem: ListRenderItem<FBPhoto> = ({item, index}) => {
     return (
@@ -79,6 +80,7 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
 
   return (
     <Container>
+      <HomeHeader />
       <FlatList
         numColumns={NUM_COLUMNS}
         data={photos}

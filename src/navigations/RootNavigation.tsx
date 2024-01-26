@@ -5,9 +5,10 @@ import {
   CameraScreen,
   GalleryScreen,
   LoginScreen,
+  ProfileScreen,
   SignUpScreen,
 } from '../features';
-import {RootStackParamList} from './NavigationTypes';
+import {RootStackParamList, RootTabParamList} from './NavigationTypes';
 import {
   selectIsLoggedIn,
   setIsLoggedIn,
@@ -18,13 +19,106 @@ import {
 } from '../states';
 import {firebaseManager} from '../firebase';
 import {Container} from '../components';
-import {Image} from 'react-native';
-import {AppImages} from '../assets';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {AppColors, AppImages} from '../assets';
 import Geolocation from '@react-native-community/geolocation';
 import {useAppPermission} from '../hooks';
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type IProps = {};
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<RootTabParamList>();
+
+function BottomTabBar({state, descriptors, navigation}: BottomTabBarProps) {
+  const {bottom} = useSafeAreaInsets();
+  return (
+    <View style={{flexDirection: 'row'}}>
+      {state.routes.map((route, index) => {
+        const {options} = descriptors[route.key];
+        console.log('BACHK_____ route.key : ', route.name);
+        const source =
+          route.name === 'Gallery'
+            ? AppImages.home
+            : route.name === 'Scan'
+            ? AppImages.scan
+            : AppImages['user-profile'];
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name, route.params);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+
+        return (
+          <View
+            style={{
+              flex: 1,
+              height: 80,
+              backgroundColor: AppColors.background,
+            }}>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              accessibilityRole="button"
+              accessibilityState={isFocused ? {selected: true} : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={{
+                flex: 1,
+                paddingBottom: bottom,
+                backgroundColor: 'rgba(74, 59, 138, 1)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                ...(route.name === 'Gallery' && {borderTopLeftRadius: 24}),
+                ...(route.name === 'Profile' && {borderTopRightRadius: 24}),
+              }}
+              key={route.key}>
+              <Image
+                source={source}
+                tintColor={isFocused ? AppColors.white : AppColors.inactive}
+              />
+            </TouchableOpacity>
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
+function BottomTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      tabBar={props => <BottomTabBar {...props} />}>
+      <Tab.Screen name="Gallery" component={GalleryScreen} />
+      <Tab.Screen name="Scan" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+
 export const RootNavigation: React.FC<IProps> = ({}) => {
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
@@ -101,7 +195,11 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
       )}
       {isLoggedIn && (
         <Stack.Group navigationKey="User">
-          <Stack.Screen name="Gallery" component={GalleryScreen} />
+          <Stack.Screen
+            name="BottomTabs"
+            component={BottomTabs}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="Camera"
             component={CameraScreen}

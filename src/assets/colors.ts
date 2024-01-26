@@ -15,4 +15,5 @@ export const AppColors = {
   disabled: '#999999',
   card: 'rgba(48, 38, 90, 1)',
   placeholder: 'rgba(151, 142, 187, 1)',
+  inactive: 'rgba(137, 128, 193, 1)',
 };
