@@ -55,7 +55,8 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
           text="TakeIt"
           style={styles.btn}
           onPress={() => {
-            navigation.navigate('Camera');
+            // navigation.navigate('Camera');
+            navigation.navigate('PointSuccess');
           }}
         />
         <Text style={styles.label}>Transactions</Text>

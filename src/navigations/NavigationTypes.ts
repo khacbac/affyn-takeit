@@ -11,6 +11,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   BottomTabs: undefined;
   Camera: undefined;
+  PointSuccess: undefined;
 };
 
 export type AllParamList = RootStackParamList & RootTabParamList;

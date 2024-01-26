@@ -5,6 +5,7 @@ import {
   CameraScreen,
   GalleryScreen,
   LoginScreen,
+  PointSuccessScreen,
   ProfileScreen,
   SignUpScreen,
 } from '../features';
@@ -204,6 +205,11 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
           <Stack.Screen
             name="Camera"
             component={CameraScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="PointSuccess"
+            component={PointSuccessScreen}
             options={{headerShown: false}}
           />
         </Stack.Group>
