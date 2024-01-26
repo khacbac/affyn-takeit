@@ -15,8 +15,9 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {RootNavigation} from './src/navigations';
 import {AppColors} from './src/assets';
 import {Provider} from 'react-redux';
-import {store} from './src/states';
+import {persistor, store} from './src/states';
 import {ModalProvider} from './src/components';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,8 +36,10 @@ function App(): React.JSX.Element {
       />
       <SafeAreaProvider>
         <Provider store={store}>
-          <RootNavigation />
-          <ModalProvider />
+          <PersistGate loading={null} persistor={persistor}>
+            <RootNavigation />
+            <ModalProvider />
+          </PersistGate>
         </Provider>
       </SafeAreaProvider>
     </NavigationContainer>

@@ -52,6 +52,11 @@ export const LoginScreen: React.FC<IProps> = ({}) => {
                     <Image source={AppImages['google-logo']} />
                   </AppButton>
                 </View>
+                <Text
+                  style={styles.createAccount}
+                  onPress={funcs.onCreateAccount}>
+                  Create account
+                </Text>
               </AppSpacing>
             </View>
           </View>
@@ -68,7 +73,7 @@ const styles = StyleSheet.create({
   },
   logo: {width: 85, height: 85, resizeMode: 'cover', alignSelf: 'center'},
   password: {marginTop: 10},
-  createAccount: {alignSelf: 'flex-end'},
+  createAccount: {color: AppColors.primary},
   form: {
     backgroundColor: AppColors.card,
     paddingHorizontal: 28,

@@ -127,29 +127,29 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
   const {checkIfLocationPermissionEnable} = useAppPermission();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
-  useEffect(() => {
-    const usersRef = firebaseManager.getFirestore('users');
-    auth().onAuthStateChanged(user => {
-      if (user) {
-        usersRef
-          .doc(user.uid)
-          .get()
-          .then(document => {
-            const userData: any = document.data();
-            if (userData) {
-              dispatch(setUser(userData));
-              dispatch(setIsLoggedIn(true));
-            }
-          })
-          .catch(error => {})
-          .finally(() => {
-            setLoading(false);
-          });
-      } else {
-        setLoading(false);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   const usersRef = firebaseManager.getFirestore('users');
+  //   auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       usersRef
+  //         .doc(user.uid)
+  //         .get()
+  //         .then(document => {
+  //           const userData: any = document.data();
+  //           if (userData) {
+  //             dispatch(setUser(userData));
+  //             dispatch(setIsLoggedIn(true));
+  //           }
+  //         })
+  //         .catch(error => {})
+  //         .finally(() => {
+  //           setLoading(false);
+  //         });
+  //     } else {
+  //       setLoading(false);
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     checkIfLocationPermissionEnable().then(isEnabled => {
@@ -170,14 +170,14 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
     });
   }, []);
 
-  if (loading) {
-    return (
-      <Container
-        contentStyle={{justifyContent: 'center', alignItems: 'center'}}>
-        <Image source={AppImages.logo} style={{width: 100, height: 100}} />
-      </Container>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Container
+  //       contentStyle={{justifyContent: 'center', alignItems: 'center'}}>
+  //       <Image source={AppImages.logo} style={{width: 100, height: 100}} />
+  //     </Container>
+  //   );
+  // }
 
   return (
     <Stack.Navigator>
