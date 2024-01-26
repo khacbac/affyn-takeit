@@ -73,11 +73,6 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
         ItemSeparatorComponent={() => <View style={{marginTop: 8}} />}
         ListHeaderComponent={renderListHeaderComponent()}
       />
-      {/* <AppButton
-        text="Logout"
-        style={[styles.logoutBtn, {bottom: bottom + 16, right: 16}]}
-        onPress={funcs.onLogOut}
-      /> */}
     </Container>
   );
 };
