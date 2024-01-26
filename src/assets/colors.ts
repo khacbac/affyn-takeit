@@ -8,8 +8,9 @@ export const AppColors = {
   black20: 'rgba(0,0,0,0.2)',
   black30: 'rgba(0,0,0,0.3)',
   text: '#111111',
-  primary: '#000000',
+  primary: 'rgba(231, 61, 96, 1)',
+  secondary: 'rgba(55, 56, 196, 1)',
   transparent: '#00000000',
-  background: '#f2f2f2',
+  background: 'rgba(37, 29, 69, 1)',
   disabled: '#999999',
 };
