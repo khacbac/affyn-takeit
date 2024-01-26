@@ -7,7 +7,7 @@ export const AppTextInput: React.FC<IProps> = ({style, ...props}) => {
   return (
     <TextInput
       style={[styles.container, style]}
-      placeholderTextColor={AppColors.black50}
+      placeholderTextColor={AppColors.placeholder}
       {...props}
     />
   );
@@ -15,11 +15,13 @@ export const AppTextInput: React.FC<IProps> = ({style, ...props}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
-    fontSize: 16,
+    color: AppColors.white,
+    backgroundColor: AppColors.background,
+    fontSize: 14,
     lineHeight: 21,
-    height: 40,
+    height: 63,
     borderRadius: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 22,
+    fontWeight: '400',
   },
 });

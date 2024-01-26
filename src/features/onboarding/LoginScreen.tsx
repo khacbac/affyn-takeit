@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {AppButton, AppSpacing, AppTextInput, Container} from '../../components';
 import {useLoginScreen} from './useLoginScreen';
-import {AppImages} from '../../assets';
+import {AppColors, AppImages} from '../../assets';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 type IProps = {};
@@ -19,40 +19,42 @@ export const LoginScreen: React.FC<IProps> = ({}) => {
     <Container safeArea="all" contentStyle={styles.contentStyle}>
       <KeyboardAwareScrollView
         contentContainerStyle={{justifyContent: 'center', flex: 1}}>
-        <AppSpacing spacing={24}>
+        <AppSpacing spacing={120}>
           <Image source={AppImages.logo} style={styles.logo} />
           <View>
-            <AppSpacing spacing={12}>
-              <AppTextInput
-                placeholder="Email"
-                value={states.email}
-                onChangeText={states.setEmail}
-              />
-              <AppTextInput
-                placeholder="Password"
-                value={states.password}
-                onChangeText={states.setPassWord}
-                secureTextEntry
-              />
-            </AppSpacing>
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>User</Text>
+            </View>
+            <View style={styles.form}>
+              <Text style={styles.formTitle}>Sign In</Text>
+              <AppSpacing spacing={16}>
+                <AppTextInput
+                  placeholder="Email"
+                  value={states.email}
+                  onChangeText={states.setEmail}
+                />
+                <AppTextInput
+                  placeholder="Password"
+                  value={states.password}
+                  onChangeText={states.setPassWord}
+                  secureTextEntry
+                />
+                <View style={styles.rowBtns}>
+                  <AppButton
+                    text="Login"
+                    onPress={funcs.onLogin}
+                    disabled={isInValid}
+                    style={{flex: 1}}
+                  />
+                  <AppButton
+                    style={styles.google}
+                    onPress={funcs.onGoolgeLogin}>
+                    <Image source={AppImages['google-logo']} />
+                  </AppButton>
+                </View>
+              </AppSpacing>
+            </View>
           </View>
-          <View>
-            <AppSpacing spacing={6}>
-              <AppButton
-                text="Login"
-                onPress={funcs.onLogin}
-                disabled={isInValid}
-              />
-              <Pressable
-                style={styles.createAccount}
-                onPress={funcs.onCreateAccount}>
-                <Text style={{color: '#66b3ff', fontWeight: '500'}}>
-                  Create account
-                </Text>
-              </Pressable>
-            </AppSpacing>
-          </View>
-          <AppButton text="Google" onPress={funcs.onGoolgeLogin} />
         </AppSpacing>
       </KeyboardAwareScrollView>
     </Container>
@@ -61,10 +63,48 @@ export const LoginScreen: React.FC<IProps> = ({}) => {
 
 const styles = StyleSheet.create({
   contentStyle: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     justifyContent: 'center',
   },
-  logo: {width: 100, height: 100, resizeMode: 'cover', alignSelf: 'center'},
+  logo: {width: 85, height: 85, resizeMode: 'cover', alignSelf: 'center'},
   password: {marginTop: 10},
   createAccount: {alignSelf: 'flex-end'},
+  form: {
+    backgroundColor: AppColors.card,
+    paddingHorizontal: 28,
+    paddingVertical: 35,
+    borderRadius: 48,
+  },
+  rowBtns: {flexDirection: 'row'},
+  google: {
+    width: 64,
+    height: 64,
+    backgroundColor: AppColors.white,
+    marginLeft: 16,
+  },
+  formTitle: {
+    color: AppColors.white,
+    fontSize: 24,
+    lineHeight: 36,
+    fontWeight: '700',
+    marginBottom: 24,
+    alignSelf: 'center',
+  },
+  cardTitle: {
+    color: AppColors.white,
+    fontSize: 16,
+    fontWeight: '400',
+    alignSelf: 'center',
+    marginTop: 17,
+  },
+  card: {
+    backgroundColor: AppColors.secondary,
+    height: 100,
+    position: 'absolute',
+    left: 12,
+    right: 12,
+    top: -50,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+  },
 });

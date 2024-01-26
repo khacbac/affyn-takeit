@@ -13,4 +13,6 @@ export const AppColors = {
   transparent: '#00000000',
   background: 'rgba(37, 29, 69, 1)',
   disabled: '#999999',
+  card: 'rgba(48, 38, 90, 1)',
+  placeholder: 'rgba(151, 142, 187, 1)',
 };

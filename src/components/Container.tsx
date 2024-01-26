@@ -40,6 +40,6 @@ export const Container: React.FC<IProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: AppColors.white},
+  container: {flex: 1, backgroundColor: AppColors.background},
   content: {flex: 1},
 });

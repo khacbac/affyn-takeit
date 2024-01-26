@@ -10,7 +10,7 @@ import {
 import {AppColors} from '../assets';
 
 type IProps = {
-  text: string;
+  text?: string;
   textStyle?: StyleProp<TextStyle> | undefined;
 } & Omit<TouchableOpacityProps, 'activeOpacity'>;
 export const AppButton: React.FC<IProps> = ({
@@ -18,6 +18,7 @@ export const AppButton: React.FC<IProps> = ({
   textStyle,
   style,
   disabled,
+  children,
   ...props
 }) => {
   return (
@@ -26,7 +27,7 @@ export const AppButton: React.FC<IProps> = ({
       activeOpacity={0.7}
       style={[styles.container, disabled && styles.disabledContainer, style]}
       {...props}>
-      <Text style={[styles.text, textStyle]}>{text}</Text>
+      {children || <Text style={[styles.text, textStyle]}>{text}</Text>}
     </TouchableOpacity>
   );
 };
@@ -34,10 +35,10 @@ export const AppButton: React.FC<IProps> = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: AppColors.primary,
-    height: 40,
+    height: 64,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 24,
   },
   disabledContainer: {
     backgroundColor: AppColors.disabled,
@@ -46,6 +47,6 @@ const styles = StyleSheet.create({
     color: AppColors.white,
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: '400',
+    fontWeight: '600',
   },
 });
