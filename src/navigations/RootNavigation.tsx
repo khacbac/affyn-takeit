@@ -70,6 +70,7 @@ function BottomTabBar({state, descriptors, navigation}: BottomTabBarProps) {
 
         return (
           <View
+            key={route.key}
             style={{
               flex: 1,
               height: 80,

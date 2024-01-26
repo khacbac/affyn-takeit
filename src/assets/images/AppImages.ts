@@ -13,4 +13,6 @@ export const AppImages = {
   share: require('./share/icon.png'),
   user: require('./user/icon.png'),
   'user-profile': require('./user-profile/icon.png'),
+  card: require('./card/icon.png'),
+  'default-avatar': require('./default-avatar/icon.png'),
 };

@@ -16,8 +16,11 @@ import Geolocation from '@react-native-community/geolocation';
 import {firebaseManager} from '../../firebase';
 import auth from '@react-native-firebase/auth';
 import {modalManager} from '../../components';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackProps} from '../../navigations';
 
 export const useGalleryScreen = () => {
+  const navigation = useNavigation<RootStackProps<'Gallery'>>();
   const user = useAppSelector(selectUser);
   const dispatch = useDispatch();
   const {requestLocationPermission} = useAppPermission();
@@ -90,5 +93,9 @@ export const useGalleryScreen = () => {
       });
   };
 
-  return {funcs: {openPhoto, onLogOut}};
+  const gotoProfile = () => {
+    navigation.navigate('Profile');
+  };
+
+  return {funcs: {openPhoto, onLogOut, gotoProfile}};
 };

@@ -1,6 +1,5 @@
-import React, {useLayoutEffect} from 'react';
+import React from 'react';
 import {
-  Dimensions,
   FlatList,
   Image,
   ListRenderItem,
@@ -11,117 +10,131 @@ import {
 } from 'react-native';
 import {AppButton, Container} from '../../components';
 import {useGalleryScreen} from './useGalleryScreen';
-import {useAppDispatch, useAppSelector} from '../../states';
+import {useAppSelector} from '../../states';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackProps} from '../../navigations';
 import {selectPhotos} from '../../states/galerrySlice';
 import {FBPhoto} from '../../types';
-import {PHOTO_RATIO} from '../../constants';
 import {AppColors} from '../../assets';
 import moment from 'moment';
-import LinearGradient from 'react-native-linear-gradient';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {HomeHeader} from './components';
+import {HomeCard, HomeHeader} from './components';
 
 type IProps = {};
-const {width} = Dimensions.get('window');
-const NUM_COLUMNS = 4;
-const SCREEN_SPACING = 3;
-const ITEM_SPACING = 3;
-const PHOTO_WIDTH =
-  (width - (NUM_COLUMNS - 1) * ITEM_SPACING - 2 * SCREEN_SPACING) / NUM_COLUMNS;
-const PHOTO_HEIGHT = PHOTO_WIDTH / PHOTO_RATIO;
 export const GalleryScreen: React.FC<IProps> = ({}) => {
   const {funcs} = useGalleryScreen();
-  const {bottom, top} = useSafeAreaInsets();
   const navigation = useNavigation<RootStackProps<'Gallery'>>();
   const photos = useAppSelector(selectPhotos);
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => {
-  //       return (
-  //         <Pressable
-  //           onPress={() => {
-  //             navigation.navigate('Camera');
-  //           }}>
-  //           <Text>Open Camera</Text>
-  //         </Pressable>
-  //       );
-  //     },
-  //   });
-  // }, []);
-
   const renderItem: ListRenderItem<FBPhoto> = ({item, index}) => {
     return (
-      <Pressable
-        style={{marginLeft: index % NUM_COLUMNS === 0 ? 0 : ITEM_SPACING}}
-        onPress={funcs.openPhoto}>
+      <Pressable style={styles.itemWrapper} onPress={funcs.openPhoto}>
         <Image source={{uri: item.photoUrl}} style={styles.photo} />
         <View style={styles.itemInfo}>
-          <LinearGradient
-            colors={['white', AppColors.black80]}
-            style={StyleSheet.absoluteFill}
-          />
-          {item.location && (
-            <Text style={styles.location}>
-              {`${item.location.latitude.toFixed(
-                3,
-              )}, ${item.location.longitude.toFixed(3)}`}
-            </Text>
-          )}
-          <Text style={styles.itemCreatedAt}>
+          <Text style={styles.itemTitle}>
             {moment(item.createdAt).format('DD/MM/YYYY HH:mm')}
           </Text>
+          {item.location && (
+            <Text style={styles.itemSubTitle}>
+              {`${item.location.latitude.toFixed(
+                7,
+              )}, ${item.location.longitude.toFixed(7)}`}
+            </Text>
+          )}
         </View>
+        {/* TODO: update real data later */}
+        <Text style={styles.price}>+10.00</Text>
       </Pressable>
+    );
+  };
+
+  const renderListHeaderComponent = () => {
+    return (
+      <>
+        <HomeCard />
+        <AppButton
+          text="TakeIt"
+          style={styles.btn}
+          onPress={() => {
+            navigation.navigate('Camera');
+          }}
+        />
+        <Text style={styles.label}>Transactions</Text>
+      </>
     );
   };
 
   return (
     <Container>
-      <HomeHeader />
+      <HomeHeader gotoProfile={funcs.gotoProfile} />
       <FlatList
-        numColumns={NUM_COLUMNS}
         data={photos}
         renderItem={renderItem}
         keyExtractor={e => e.title}
-        ItemSeparatorComponent={() => (
-          <View style={{marginTop: ITEM_SPACING}} />
-        )}
-        contentContainerStyle={styles.list}
+        ItemSeparatorComponent={() => <View style={{marginTop: 8}} />}
+        ListHeaderComponent={renderListHeaderComponent()}
       />
-      <AppButton
+      {/* <AppButton
         text="Logout"
         style={[styles.logoutBtn, {bottom: bottom + 16, right: 16}]}
         onPress={funcs.onLogOut}
-      />
+      /> */}
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
   photo: {
-    width: PHOTO_WIDTH,
-    height: PHOTO_HEIGHT,
+    width: 40,
+    height: 40,
+    borderRadius: 40,
   },
-  list: {
-    paddingTop: ITEM_SPACING,
-    paddingHorizontal: SCREEN_SPACING,
+  itemWrapper: {
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    backgroundColor: AppColors.card,
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    paddingVertical: 13,
   },
   itemInfo: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    alignItems: 'flex-end',
-    paddingBottom: 4,
-    paddingTop: 16,
-    paddingHorizontal: 4,
+    flex: 1,
+    marginLeft: 12,
   },
   location: {color: AppColors.white, fontSize: 8},
   itemCreatedAt: {color: AppColors.white, fontSize: 8},
   logoutBtn: {
     position: 'absolute',
     paddingHorizontal: 16,
+  },
+  btn: {marginTop: 14, marginHorizontal: 24},
+  label: {
+    color: AppColors.text,
+    marginLeft: 16,
+    marginTop: 53,
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '500',
+    marginBottom: 16,
+  },
+  price: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '400',
+    color: AppColors.text,
+    marginLeft: 8,
+  },
+  itemTitle: {
+    fontSize: 13,
+    lineHeight: 19,
+    fontWeight: '400',
+    color: AppColors.text,
+  },
+  itemSubTitle: {
+    fontSize: 12,
+    lineHeight: 18,
+    fontWeight: '400',
+    color: 'rgba(124, 114, 189, 1)',
+    marginTop: 2,
   },
 });
