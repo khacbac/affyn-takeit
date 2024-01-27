@@ -58,7 +58,7 @@ const LoadingModal = forwardRef<LoadingModalRef, {}>(({}, ref) => {
         {
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: AppColors.black20,
+          backgroundColor: AppColors.black30,
         },
       ]}>
       <ActivityIndicator size={'large'} color={AppColors.primary} />

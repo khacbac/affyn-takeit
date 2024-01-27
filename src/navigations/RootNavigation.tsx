@@ -29,6 +29,7 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 
 type IProps = {};
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -40,7 +41,6 @@ function BottomTabBar({state, descriptors, navigation}: BottomTabBarProps) {
     <View style={{flexDirection: 'row'}}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
-        console.log('BACHK_____ route.key : ', route.name);
         const source =
           route.name === 'Gallery'
             ? AppImages.home
@@ -51,6 +51,10 @@ function BottomTabBar({state, descriptors, navigation}: BottomTabBarProps) {
         const isFocused = state.index === index;
 
         const onPress = () => {
+          if (route.name === 'Scan') {
+            navigation.navigate('Camera');
+            return;
+          }
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
@@ -210,7 +214,7 @@ export const RootNavigation: React.FC<IProps> = ({}) => {
           <Stack.Screen
             name="PointSuccess"
             component={PointSuccessScreen}
-            options={{headerShown: false}}
+            options={{headerShown: false, gestureEnabled: false}}
           />
         </Stack.Group>
       )}

@@ -1,11 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
 import type {PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from './stores';
-import {LatLng} from '../types';
+import {LatLng, User} from '../types';
 
 // Define a type for the slice state
 interface UserState {
-  user: {email: string; id: string};
+  user: User;
   location?: LatLng;
 }
 
@@ -22,6 +22,9 @@ export const userSlice = createSlice({
     setUser: (state, action: PayloadAction<{email: string; id: string}>) => {
       state.user = action.payload;
     },
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
+      state.user = {...state.user, ...action.payload};
+    },
     setUserLocation: (state, action: PayloadAction<LatLng>) => {
       state.location = action.payload;
     },
@@ -31,7 +34,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const {setUser, setUserLocation, removeUser} = userSlice.actions;
+export const {setUser, setUserLocation, removeUser, updateUser} =
+  userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user;

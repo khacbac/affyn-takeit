@@ -6,6 +6,7 @@ import {
   setPhotos,
   setUser,
   setUserLocation,
+  updateUser,
   useAppSelector,
 } from '../../states';
 import {FBPhoto} from '../../types';
@@ -26,6 +27,19 @@ export const useGalleryScreen = () => {
   const {requestLocationPermission} = useAppPermission();
 
   useEffect(() => {
+    const subscriber = firebaseManager
+      .getFirestore('users')
+      .doc(user.id)
+      .onSnapshot(querySnapshot => {
+        const data = querySnapshot.data();
+        if (data) {
+          dispatch(updateUser(data));
+        }
+      });
+    return subscriber; // unsubscribe on unmount
+  }, [user.id]);
+
+  useEffect(() => {
     if (!user) {
       return;
     }
@@ -43,6 +57,7 @@ export const useGalleryScreen = () => {
             photoUrl: data.photoUrl,
             title: data.title,
             location: data.location,
+            points: data.points,
             ...(data.createdAt && {
               createdAt: new Date(data.createdAt?.toDate()).toISOString(),
             }),

@@ -1,4 +1,5 @@
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, RouteProp} from '@react-navigation/native';
+import {FBPhoto} from '../types';
 
 export type RootTabParamList = {
   Gallery: undefined;
@@ -11,12 +12,17 @@ export type RootStackParamList = {
   SignUp: undefined;
   BottomTabs: undefined;
   Camera: undefined;
-  PointSuccess: undefined;
+  PointSuccess: {data: FBPhoto};
 };
 
 export type AllParamList = RootStackParamList & RootTabParamList;
 
 export type RootStackProps<T extends keyof AllParamList> = NavigationProp<
+  AllParamList,
+  T
+>;
+
+export type RootRouteProps<T extends keyof AllParamList> = RouteProp<
   AllParamList,
   T
 >;

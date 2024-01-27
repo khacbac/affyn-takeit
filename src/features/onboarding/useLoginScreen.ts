@@ -66,8 +66,12 @@ export const useLoginScreen = () => {
       // Sign-in the user with the credential
       const response = await auth().signInWithCredential(googleCredential);
       if (response.user.email) {
-        dispatch(setUser({email: response.user.email, id: response.user.uid}));
+        const uid = response.user.uid;
+        const email = response.user.email;
+        dispatch(setUser({email, id: uid}));
         dispatch(setIsLoggedIn(true));
+        const data = {id: uid, email, points: 0};
+        firebaseManager.getFirestore('users').doc(uid).set(data);
       } else {
         Alert.alert('Something went wrong.\nPlease try again');
       }

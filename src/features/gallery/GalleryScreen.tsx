@@ -18,6 +18,8 @@ import {FBPhoto} from '../../types';
 import {AppColors} from '../../assets';
 import moment from 'moment';
 import {HomeCard, HomeHeader} from './components';
+import {FORMAT_DATETIME} from '../../constants';
+import {formatLatLng, formatPoints} from '../../utils';
 
 type IProps = {};
 export const GalleryScreen: React.FC<IProps> = ({}) => {
@@ -31,18 +33,16 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
         <Image source={{uri: item.photoUrl}} style={styles.photo} />
         <View style={styles.itemInfo}>
           <Text style={styles.itemTitle}>
-            {moment(item.createdAt).format('DD/MM/YYYY HH:mm')}
+            {moment(item.createdAt).format(FORMAT_DATETIME)}
           </Text>
           {item.location && (
             <Text style={styles.itemSubTitle}>
-              {`${item.location.latitude.toFixed(
-                7,
-              )}, ${item.location.longitude.toFixed(7)}`}
+              {formatLatLng(item.location)}
             </Text>
           )}
         </View>
         {/* TODO: update real data later */}
-        <Text style={styles.price}>+10.00</Text>
+        <Text style={styles.price}>{`+${formatPoints(item.points)}`}</Text>
       </Pressable>
     );
   };
@@ -55,8 +55,8 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
           text="TakeIt"
           style={styles.btn}
           onPress={() => {
-            // navigation.navigate('Camera');
-            navigation.navigate('PointSuccess');
+            navigation.navigate('Camera');
+            // navigation.navigate('PointSuccess');
           }}
         />
         <Text style={styles.label}>Transactions</Text>

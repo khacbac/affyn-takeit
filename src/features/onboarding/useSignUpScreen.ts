@@ -39,7 +39,7 @@ export const useSignUpScreen = () => {
         password,
       );
       const uid = response.user.uid;
-      const data = {id: uid, email};
+      const data = {id: uid, email, points: 0};
       await firebaseManager.getFirestore('users').doc(uid).set(data);
       navigation.goBack();
     } catch (error: any) {

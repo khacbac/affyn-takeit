@@ -1,5 +1,12 @@
 import React, {useRef} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {AppButton, Container} from '../../components';
 import {useCameraScreen} from './useCameraScreen';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
@@ -27,34 +34,65 @@ export const CameraScreen: React.FC<IProps> = ({}) => {
         photo={true}
         ref={refs.camera}
       />
-      <AppButton
-        text="Take A Picture"
-        style={styles.btn}
-        onPress={funcs.takeAPicture}
-      />
-      <Pressable
-        style={[styles.backbtn, {top: top + 16}]}
-        onPress={navigation.goBack}>
-        <Image
-          source={AppImages.back}
-          style={{width: 16, height: 16}}
-          tintColor={AppColors.black}
-        />
-      </Pressable>
+      <View
+        pointerEvents="box-none"
+        style={[
+          StyleSheet.absoluteFill,
+          {justifyContent: 'center', alignItems: 'center'},
+        ]}>
+        <View pointerEvents="none">
+          <Image source={AppImages['focusing-to-take-a-picture']} />
+        </View>
+        <View style={{alignSelf: 'center'}}>
+          <AppButton
+            style={{
+              position: 'absolute',
+              width: 72,
+              height: 72,
+              borderRadius: 72,
+              alignSelf: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.06)',
+            }}
+            onPress={funcs.takeAPicture}>
+            <Image source={AppImages.bolt} />
+          </AppButton>
+        </View>
+      </View>
+      <View style={[styles.header, {top: top + 16, width: '100%'}]}>
+        <TouchableOpacity
+          style={styles.backbtn}
+          onPress={navigation.goBack}
+          activeOpacity={0.8}>
+          <Image
+            source={AppImages['arrow-left']}
+            style={{width: 24, height: 24}}
+            tintColor={AppColors.white}
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Take Photo</Text>
+      </View>
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
   btn: {position: 'absolute', bottom: 20, left: 16, right: 16},
+  header: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   backbtn: {
     position: 'absolute',
     left: 16,
-    width: 36,
-    height: 36,
-    borderRadius: 36,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: AppColors.white,
+  },
+  headerTitle: {
+    color: AppColors.white,
+    alignSelf: 'center',
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '500',
   },
 });

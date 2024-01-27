@@ -2,12 +2,17 @@ import React from 'react';
 import {AppButton, AppSpacing, Container} from '../../components';
 import {Alert, Image, StyleSheet, Text, View} from 'react-native';
 import {AppColors, AppImages} from '../../assets';
-import {useNavigation} from '@react-navigation/native';
-import {RootStackProps} from '../../navigations';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {RootRouteProps, RootStackProps} from '../../navigations';
+import moment from 'moment';
+import {FORMAT_DATETIME} from '../../constants';
+import {formatLatLng} from '../../utils';
 
 type IProps = {};
 export const PointSuccessScreen: React.FC<IProps> = ({}) => {
   const navigation = useNavigation<RootStackProps<'PointSuccess'>>();
+  const route = useRoute<RootRouteProps<'PointSuccess'>>();
+  const {data} = route.params;
 
   const onClose = () => {
     navigation.navigate('Gallery');
@@ -27,17 +32,21 @@ export const PointSuccessScreen: React.FC<IProps> = ({}) => {
           <View style={styles.successIconWrapper}>
             <Image source={AppImages.check} />
           </View>
-          <Text style={styles.text}>You won 10 points!</Text>
+          <Text style={styles.text}>You won {data.points} points!</Text>
           <View>
             <AppSpacing spacing={22}>
               <View style={{alignItems: 'center'}}>
                 <Text style={styles.dateLabel}>Date</Text>
-                <Text style={styles.date}>20 Jan 2024 16:54</Text>
+                <Text style={styles.date}>
+                  {moment(data.createdAt).format(FORMAT_DATETIME)}
+                </Text>
               </View>
-              <View style={{alignItems: 'center'}}>
-                <Text style={styles.dateLabel}>Location</Text>
-                <Text style={styles.date}>1.2885728, 103.882167</Text>
-              </View>
+              {data.location && (
+                <View style={{alignItems: 'center'}}>
+                  <Text style={styles.dateLabel}>Location</Text>
+                  <Text style={styles.date}>{formatLatLng(data.location)}</Text>
+                </View>
+              )}
             </AppSpacing>
           </View>
         </AppSpacing>

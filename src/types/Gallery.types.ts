@@ -7,4 +7,5 @@ export type FBPhoto = {
   createdAt: string;
   authorID: string;
   location?: LatLng;
+  points?: number;
 };
