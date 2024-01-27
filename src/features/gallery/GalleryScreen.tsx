@@ -35,11 +35,9 @@ export const GalleryScreen: React.FC<IProps> = ({}) => {
           <Text style={styles.itemTitle}>
             {moment(item.createdAt).format(FORMAT_DATETIME)}
           </Text>
-          {item.location && (
-            <Text style={styles.itemSubTitle}>
-              {formatLatLng(item.location)}
-            </Text>
-          )}
+          <Text style={styles.itemSubTitle}>
+            {item.location ? formatLatLng(item.location) : 'No Coordinates'}
+          </Text>
         </View>
         {/* TODO: update real data later */}
         <Text style={styles.price}>{`+${formatPoints(item.points)}`}</Text>

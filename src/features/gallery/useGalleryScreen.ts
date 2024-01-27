@@ -65,6 +65,8 @@ export const useGalleryScreen = () => {
         });
         if (list.length > 0) {
           dispatch(setPhotos(list));
+        } else {
+          dispatch(setPhotos([]));
         }
       });
 
